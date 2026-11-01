@@ -195,7 +195,7 @@ with tab6:
         )
         st.caption("Estas predicciones asumen que el mecanismo de degradación no cambia con la "
                    "temperatura. Deben confirmarse con estudios de estabilidad reales.")
-       st.divider()
+st.divider()
 st.markdown(
     """
     
