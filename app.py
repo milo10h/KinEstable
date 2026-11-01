@@ -202,5 +202,5 @@ salto = a + "br" + c
 fin = a + "/div" + c
 texto = (estilo + "KinEstable © 2026 · Todos los derechos reservados" + salto
          + "Desarrollado por: María Paula Herrera · Juan Camilo Hoyos · Carolina Rodríguez" + salto
-         + "Universidad de Antioquia" + fin)
+         + "Facultad de Ciencias Farmacéuticas - Universidad de Antioquia" + fin)
 st.markdown(texto, unsafe_allow_html=True)
