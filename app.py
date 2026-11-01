@@ -195,14 +195,7 @@ with tab6:
         )
         st.caption("Estas predicciones asumen que el mecanismo de degradación no cambia con la "
                    "temperatura. Deben confirmarse con estudios de estabilidad reales.")
-st.divider()
-st.markdown(
-    """
-    
-        KinEstable © 2026 · Todos los derechos reservados
-        Desarrollado por: María Paula Herrera · Juan Camilo Hoyos · Carolina Rodríguez
-        Universidad de Antioquia
-    
-    """,
-    unsafe_allow_html=True
-)
+        st.divider()
+st.markdown(" KinEstable © 2026 · Todos los derechos reservados ", unsafe_allow_html=True)
+st.markdown(" Desarrollado por: María Paula Herrera · Juan Camilo Hoyos · Carolina Rodríguez ", unsafe_allow_html=True)
+st.markdown(" Universidad de Antioquia ", unsafe_allow_html=True)
