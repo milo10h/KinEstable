@@ -89,7 +89,7 @@ with tab2:
             st.metric("R²", f"{r['R2']:.5f}")
             st.write(f"Pendiente: {r['pendiente']:.5f}")
             st.write(f"Intercepto: {r['intercepto']:.5f}")
-                        signo = "+" if r["intercepto"] >= 0 else "−"
+            signo = "+" if r["intercepto"] >= 0 else "−"
             st.write(f"**Ecuación:** {r['etiqueta']} = {r['pendiente']:.6g}·t {signo} {abs(r['intercepto']):.6g}")
 
 # ---------- ORDEN Y PARÁMETROS ----------
