@@ -199,26 +199,27 @@ with tab6:
                    "temperatura. Deben confirmarse con estudios de estabilidad reales.")
 # ---------- DESCARGAR RESULTADOS EN EXCEL ----------
 import io
-st.divider()
-st.subheader("📥 Descargar resultados")
-buffer = io.BytesIO()
-with pd.ExcelWriter(buffer, engine="openpyxl") as writer:
-    pd.DataFrame({
-        "Parámetro": ["Principio activo", "Orden de reacción", "k", "[A]0 ajustada",
-                      "Ea (kJ/mol)", "Factor A", "R² Arrhenius"],
-        "Valor": [farmaco, orden, k, A0, Ea/1000, A_pre, reg_a.rvalue**2]
-    }).to_excel(writer, sheet_name="Resumen", index=False)
-    datos.to_excel(writer, sheet_name="Datos", index=False)
-    pd.DataFrame({m: {"Pendiente": r["pendiente"], "Intercepto": r["intercepto"], "R²": r["R2"]}
-                  for m, r in resultados.items()}).T.to_excel(writer, sheet_name="Regresiones")
-    pd.DataFrame(tiempos_exp, index=[f"Tiempo ({unidad})"]).T.to_excel(writer, sheet_name="Tiempos")
-    pd.DataFrame({"T (°C)": arr["Temperatura_C"].values, "T (K)": T, "k": kT,
-                  "1/T": x_arr, "ln(k)": y_arr}).to_excel(writer, sheet_name="Arrhenius", index=False)
-    pd.DataFrame([{"T (°C)": tc, "k": k_a(tc), **tiempos(orden, k_a(tc), A0)}
-                  for tc in [5, 25, 30, 40]]).to_excel(writer, sheet_name="Predicción", index=False)
-st.download_button("Descargar resultados en Excel", data=buffer.getvalue(),
-                   file_name=f"KinEstable_{farmaco}.xlsx",
-                   mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+with tab6:
+    st.divider()
+    st.subheader("📥 Descargar resultados")
+    buffer = io.BytesIO()
+    with pd.ExcelWriter(buffer, engine="openpyxl") as writer:
+        pd.DataFrame({
+            "Parámetro": ["Principio activo", "Orden de reacción", "k", "[A]0 ajustada",
+                          "Ea (kJ/mol)", "Factor A", "R² Arrhenius"],
+            "Valor": [farmaco, orden, k, A0, Ea/1000, A_pre, reg_a.rvalue**2]
+        }).to_excel(writer, sheet_name="Resumen", index=False)
+        datos.to_excel(writer, sheet_name="Datos", index=False)
+        pd.DataFrame({m: {"Pendiente": r["pendiente"], "Intercepto": r["intercepto"], "R²": r["R2"]}
+                      for m, r in resultados.items()}).T.to_excel(writer, sheet_name="Regresiones")
+        pd.DataFrame(tiempos_exp, index=[f"Tiempo ({unidad})"]).T.to_excel(writer, sheet_name="Tiempos")
+        pd.DataFrame({"T (°C)": arr["Temperatura_C"].values, "T (K)": T, "k": kT,
+                      "1/T": x_arr, "ln(k)": y_arr}).to_excel(writer, sheet_name="Arrhenius", index=False)
+        pd.DataFrame([{"T (°C)": tc, "k": k_a(tc), **tiempos(orden, k_a(tc), A0)}
+                      for tc in [5, 25, 30, 40]]).to_excel(writer, sheet_name="Predicción", index=False)
+    st.download_button("Descargar resultados en Excel", data=buffer.getvalue(),
+                       file_name=f"KinEstable_{farmaco}.xlsx",
+                       mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
 st.divider()
 a, c = chr(60), chr(62)
 estilo = a + "div style='text-align:center;'" + c
