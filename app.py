@@ -35,14 +35,33 @@ tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs([
 
 # ---------- DATOS ----------
 with tab1:
-    st.header(f"Datos experimentales de {farmaco}")
-    st.write("Ingresa o edita tus datos. Puedes agregar filas abajo. "
-             "Los valores que vienen son solo de ejemplo.")
+    col_titulo, col_boton = st.columns([3, 1])
+    with col_titulo:
+        st.header(f"Datos experimentales de {farmaco}")
+    with col_boton:
+        archivo = st.file_uploader("📂 Subir datos desde Excel", type=["xlsx", "csv"])
+    st.write("Ingresa o edita tus datos en la tabla, o súbelos desde Excel. "
+             "El archivo debe tener dos columnas: Tiempo y Concentracion.")
     datos_ejemplo = pd.DataFrame({
         "Tiempo": [0, 10, 20, 30, 40, 50],
         "Concentracion": [100, 90.5, 81.9, 74.1, 67.0, 60.7]
     })
-    datos = st.data_editor(datos_ejemplo, num_rows="dynamic", key="datos")
+    clave = "datos"
+    if archivo is not None:
+        try:
+            if archivo.name.endswith(".csv"):
+                subido = pd.read_csv(archivo)
+            else:
+                subido = pd.read_excel(archivo)
+            subido = subido.iloc[:, :2]
+            subido.columns = ["Tiempo", "Concentracion"]
+            subido = subido.apply(pd.to_numeric, errors="coerce").dropna()
+            datos_ejemplo = subido
+            clave = "datos_" + archivo.name
+            st.success(f"Datos cargados desde {archivo.name}")
+        except Exception as e:
+            st.error(f"No se pudo leer el archivo: {e}")
+    datos = st.data_editor(datos_ejemplo, num_rows="dynamic", key=clave)
 
 datos = datos.dropna()
 t = datos["Tiempo"].astype(float).values
