@@ -135,15 +135,37 @@ with tab3:
 
 # ---------- ARRHENIUS ----------
 with tab4:
-    st.header("Módulo Arrhenius")
-    st.write(f"Ingresa las constantes k de {farmaco} obtenidas a diferentes temperaturas (°C).")
+    col_t, col_b = st.columns([3, 1])
+    with col_t:
+        st.header("Módulo Arrhenius")
+    with col_b:
+        archivo_arr = st.file_uploader("📂 Subir datos desde Excel", type=["xlsx", "csv"], key="up_arr")
+        unidad_T = st.radio("Unidad de temperatura", ["°C", "K"], horizontal=True)
+    st.write(f"Ingresa las constantes k de {farmaco} a diferentes temperaturas (°C), o súbelas desde Excel. "
+             "El archivo debe tener dos columnas: Temperatura_C y k.")
     arr_ejemplo = pd.DataFrame({
         "Temperatura_C": [40, 50, 60, 70],
         "k": [0.005, 0.012, 0.027, 0.058]
     })
-    arr = st.data_editor(arr_ejemplo, num_rows="dynamic", key="arr").dropna()
+    clave_arr = "arr"
+    if archivo_arr is not None:
+        try:
+            if archivo_arr.name.endswith(".csv"):
+                sub_arr = pd.read_csv(archivo_arr)
+            else:
+                sub_arr = pd.read_excel(archivo_arr)
+            sub_arr = sub_arr.iloc[:, :2]
+            sub_arr.columns = ["Temperatura_C", "k"]
+            sub_arr = sub_arr.apply(pd.to_numeric, errors="coerce").dropna()
+            arr_ejemplo = sub_arr
+            clave_arr = "arr_" + archivo_arr.name
+            st.success(f"Datos cargados desde {archivo_arr.name}")
+        except Exception as e:
+            st.error(f"No se pudo leer el archivo: {e}")
+    arr = st.data_editor(arr_ejemplo, num_rows="dynamic", key=clave_arr).dropna()
 
-T = arr["Temperatura_C"].astype(float).values + 273.15
+temps = arr["Temperatura_C"].astype(float).values
+T = temps if unidad_T == "K" else temps + 273.15
 kT = arr["k"].astype(float).values
 x_arr = 1 / T
 y_arr = np.log(kT)
