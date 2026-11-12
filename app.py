@@ -8,15 +8,54 @@ R = 8.314  # J/mol·K
 
 st.set_page_config(page_title="KinEstable", page_icon="💊", layout="wide")
 a, c = chr(60), chr(62)
-patron = ("%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='104'%3E"
-          "%3Cg fill='none' stroke='%230F6E7A' stroke-opacity='0.14' stroke-width='1.5'%3E"
-          "%3Cpolygon points='58,40 49,55.6 31,55.6 22,40 31,24.4 49,24.4'/%3E"
-          "%3Cline x1='58' y1='40' x2='80' y2='40'/%3E%3Ccircle cx='84' cy='40' r='3'/%3E"
-          "%3Cline x1='31' y1='55.6' x2='22' y2='72'/%3E%3Ccircle cx='20' cy='76' r='2.5'/%3E"
-          "%3C/g%3E%3C/svg%3E")
+patron = (
+    "%3Csvg xmlns='http://www.w3.org/2000/svg' width='1700' height='1050' viewBox='0 "
+    "0 1700 1050'%3E%3Cg fill='none' stroke='%230F6E7A' stroke-opacity='0.15' stroke-"
+    "width='2.5' stroke-linecap='round'%3E%3Cpolygon points='218,188 170,215 122,188 "
+    "122,132 170,105 218,132'/%3E%3Cline x1='204' y1='180' x2='170' y2='200'/%3E%3Cli"
+    "ne x1='136' y1='180' x2='136' y2='140'/%3E%3Cline x1='170' y1='120' x2='204' y2="
+    "'140'/%3E%3Cline x1='218' y1='188' x2='268' y2='158'/%3E%3Ctext x='272' y='154' "
+    "font-size='22' font-family='sans-serif' stroke='none' fill='%230F6E7A' fill-opac"
+    "ity='0.16'%3EOH%3C/text%3E%3Cpolygon points='1440,210 1410,262 1350,262 1320,210"
+    " 1350,158 1410,158'/%3E%3Ccircle cx='1410' cy='262' r='6'/%3E%3Ccircle cx='1320'"
+    " cy='210' r='6'/%3E%3Cline x1='1440' y1='210' x2='1495' y2='210'/%3E%3Ctext x='1"
+    "499' y='218' font-size='22' font-family='sans-serif' stroke='none' fill='%230F6E"
+    "7A' fill-opacity='0.16'%3EF%3C/text%3E%3Cline x1='620' y1='110' x2='670' y2='80'"
+    "/%3E%3Cline x1='670' y1='80' x2='720' y2='110'/%3E%3Cline x1='720' y1='110' x2='"
+    "770' y2='80'/%3E%3Cline x1='770' y1='80' x2='820' y2='110'/%3E%3Cline x1='820' y"
+    "1='110' x2='870' y2='80'/%3E%3Cline x1='826' y1='110' x2='826' y2='165'/%3E%3Cli"
+    "ne x1='820' y1='110' x2='820' y2='165'/%3E%3Ctext x='874' y='80' font-size='22' "
+    "font-family='sans-serif' stroke='none' fill='%230F6E7A' fill-opacity='0.16'%3EOH"
+    "%3C/text%3E%3Ctext x='812' y='187' font-size='22' font-family='sans-serif' strok"
+    "e='none' fill='%230F6E7A' fill-opacity='0.16'%3EO%3C/text%3E%3Cpolygon points='3"
+    "15,760 288,808 232,808 205,760 232,712 288,712'/%3E%3Cpolygon points='410,760 38"
+    "2,808 328,808 300,760 328,712 382,712'/%3E%3Cline x1='300' y1='760' x2='280' y2="
+    "'794'/%3E%3Cline x1='240' y1='794' x2='220' y2='760'/%3E%3Cline x1='240' y1='726"
+    "' x2='280' y2='726'/%3E%3Cpolygon points='1250,750 1298,785 1279,840 1221,840 12"
+    "02,785'/%3E%3Ccircle cx='1250' cy='750' r='6'/%3E%3Cline x1='1279' y1='840' x2='"
+    "1299' y2='895'/%3E%3Cline x1='1299' y1='895' x2='1354' y2='905'/%3E%3Cline x1='8"
+    "20' y1='560' x2='820' y2='480'/%3E%3Ccircle cx='820' cy='480' r='9'/%3E%3Cline x"
+    "1='820' y1='560' x2='890' y2='605'/%3E%3Ccircle cx='890' cy='605' r='9'/%3E%3Cli"
+    "ne x1='820' y1='560' x2='750' y2='605'/%3E%3Ccircle cx='750' cy='605' r='9'/%3E%"
+    "3Ccircle cx='820' cy='560' r='13'/%3E%3Cpolygon points='526,442 492,476 446,464 "
+    "434,418 468,384 514,396'/%3E%3Cline x1='446' y1='464' x2='426' y2='519'/%3E%3Cte"
+    "xt x='406' y='544' font-size='22' font-family='sans-serif' stroke='none' fill='%"
+    "230F6E7A' fill-opacity='0.16'%3ENH2%3C/text%3E%3Cpolygon points='1605,586 1560,6"
+    "12 1515,586 1515,534 1560,508 1605,534'/%3E%3Cline x1='1592' y1='579' x2='1560' "
+    "y2='597'/%3E%3Cline x1='1528' y1='579' x2='1528' y2='541'/%3E%3Cline x1='1560' y"
+    "1='523' x2='1592' y2='541'/%3E%3Cline x1='1515' y1='534' x2='1455' y2='534'/%3E%"
+    "3Ctext x='1425' y='542' font-size='22' font-family='sans-serif' stroke='none' fi"
+    "ll='%230F6E7A' fill-opacity='0.16'%3ESO2%3C/text%3E%3Cpolygon points='820,900 80"
+    "0,935 760,935 740,900 760,865 800,865'/%3E%3Cline x1='420' y1='1000' x2='470' y2"
+    "='970'/%3E%3Cline x1='470' y1='970' x2='520' y2='1000'/%3E%3Cline x1='470' y1='9"
+    "70' x2='470' y2='915'/%3E%3Cline x1='478' y1='970' x2='478' y2='915'/%3E%3Ctext "
+    "x='462' y='905' font-size='22' font-family='sans-serif' stroke='none' fill='%230"
+    "F6E7A' fill-opacity='0.16'%3EO%3C/text%3E%3C/g%3E%3C/svg%3E"
+)
 fondo = (a + "style" + c +
          '.stApp {background-image: url("data:image/svg+xml,' + patron + '");'
-         "background-size: 120px 104px;}" + a + "/style" + c)
+         "background-size: cover; background-repeat: no-repeat; background-attachment: fixed;}" + a + "/style" + c)
+st.markdown(fondo, unsafe_allow_html=True)
 st.markdown(fondo, unsafe_allow_html=True)
 st.title("💊 KinEstable")
 st.subheader("Herramienta de Análisis Cinético y Predicción de Estabilidad de Productos Farmacéuticos")
