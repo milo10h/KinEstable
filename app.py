@@ -16,8 +16,17 @@ a, c = chr(60), chr(62)
 fondo = (a + "style" + c + ".stApp {background-image: url('data:image/png;base64," + img64 + "');"
          "background-size: cover; background-attachment: fixed;}" + a + "/style" + c)
 st.markdown(fondo, unsafe_allow_html=True)
-st.markdown(fondo, unsafe_allow_html=True)
-st.markdown(fondo, unsafe_allow_html=True)
+estilo_tabs = (a + "style" + c +
+    '.stTabs [data-baseweb="tab-list"] {gap: 8px; width: 100%;}'
+    '.stTabs [data-baseweb="tab"] {flex: 1; justify-content: center; padding: 10px 6px;'
+    'border-radius: 10px; border: 1px solid rgba(79,163,173,0.6);'
+    'background: rgba(79,163,173,0.10);}'
+    '.stTabs [data-baseweb="tab"] p {font-size: 1.1rem; font-weight: 600;}'
+    '.stTabs [aria-selected="true"] {background: rgba(79,163,173,0.85);}'
+    '.stTabs [aria-selected="true"] p {color: white;}'
+    '.stTabs [data-baseweb="tab-highlight"], .stTabs [data-baseweb="tab-border"] {display: none;}'
+    + a + "/style" + c)
+st.markdown(estilo_tabs, unsafe_allow_html=True)
 st.title("💊 KinEstable")
 st.subheader("Herramienta de Análisis Cinético y Predicción de Estabilidad de Productos Farmacéuticos")
 
