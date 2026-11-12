@@ -26,7 +26,7 @@ estilo_tabs = (a + "style" + c +
     'button[role="tab"][aria-selected="true"] p {color: white !important;}'
     'div[data-baseweb="tab-highlight"], div[data-baseweb="tab-border"] {display: none !important;}'
     + a + "/style" + c)
-st.markdown(estilo_tabs, unsafe_allow_html=True)
+st.html(estilo_tabs)
 st.title("💊 KinEstable")
 st.subheader("Herramienta de Análisis Cinético y Predicción de Estabilidad de Productos Farmacéuticos")
 
