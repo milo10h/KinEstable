@@ -9,7 +9,7 @@ R = 8.314  # J/mol·K
 st.set_page_config(page_title="KinEstable", page_icon="💊", layout="wide")
 import base64
 tema = getattr(getattr(st.context, "theme", None), "type", None) or "light"
-archivo_fondo = "fondo_oscuro.png" if tema == "dark" else "fondo_claro.png"
+archivo_fondo = "fondo.png"
 with open(archivo_fondo, "rb") as f:
     img64 = base64.b64encode(f.read()).decode()
 a, c = chr(60), chr(62)
