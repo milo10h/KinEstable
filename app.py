@@ -7,6 +7,17 @@ from scipy import stats
 R = 8.314  # J/mol·K
 
 st.set_page_config(page_title="KinEstable", page_icon="💊", layout="wide")
+a, c = chr(60), chr(62)
+patron = ("%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='104'%3E"
+          "%3Cg fill='none' stroke='%230F6E7A' stroke-opacity='0.14' stroke-width='1.5'%3E"
+          "%3Cpolygon points='58,40 49,55.6 31,55.6 22,40 31,24.4 49,24.4'/%3E"
+          "%3Cline x1='58' y1='40' x2='80' y2='40'/%3E%3Ccircle cx='84' cy='40' r='3'/%3E"
+          "%3Cline x1='31' y1='55.6' x2='22' y2='72'/%3E%3Ccircle cx='20' cy='76' r='2.5'/%3E"
+          "%3C/g%3E%3C/svg%3E")
+fondo = (a + "style" + c +
+         '.stApp {background-image: url("data:image/svg+xml,' + patron + '");'
+         "background-size: 120px 104px;}" + a + "/style" + c)
+st.markdown(fondo, unsafe_allow_html=True)
 st.title("💊 KinEstable")
 st.subheader("Herramienta de Análisis Cinético y Predicción de Estabilidad de Productos Farmacéuticos")
 
