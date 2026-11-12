@@ -26,7 +26,19 @@ estilo_tabs = (a + "style" + c +
     ".stTabs [role=tab][aria-selected=true] p {color: white !important;}"
     + a + "/style" + c)
 st.markdown(estilo_tabs, unsafe_allow_html=True)
-st.title("💊 KinEstable")
+logo = ("{div style='display:flex;align-items:center;gap:14px;margin-bottom:0.4rem;'}"
+        "{svg width='64' height='64' viewBox='0 0 64 64'}"
+        "{polygon points='32,3 57,17.5 57,46.5 32,61 7,46.5 7,17.5' fill='none' stroke='#4FA3AD' stroke-width='3'/}"
+        "{line x1='15' y1='48' x2='50' y2='48' stroke='#4FA3AD' stroke-width='1.5' stroke-opacity='0.5'/}"
+        "{path d='M16 20 Q24 40 48 44' fill='none' stroke='#4FA3AD' stroke-width='3' stroke-linecap='round'/}"
+        "{circle cx='16' cy='20' r='3.5' fill='#4FA3AD'/}"
+        "{circle cx='28' cy='36' r='3.5' fill='#4FA3AD'/}"
+        "{circle cx='48' cy='44' r='3.5' fill='#4FA3AD'/}"
+        "{/svg}"
+        "{span style='font-size:2.6rem;font-weight:700;letter-spacing:0.5px;'}Kin"
+        "{span style='color:#4FA3AD;'}Estable{/span}{/span}"
+        "{/div}").replace("{", a).replace("}", c)
+st.markdown(logo, unsafe_allow_html=True)
 st.subheader("Herramienta de Análisis Cinético y Predicción de Estabilidad de Productos Farmacéuticos")
 
 c1, c2, c3 = st.columns(3)
