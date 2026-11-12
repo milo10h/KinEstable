@@ -196,26 +196,97 @@ with tab5:
 
 # ---------- CONCLUSIONES ----------
 with tab6:
-    st.header("Conclusiones automáticas")
+    st.header("🤖 Conclusiones automáticas")
     if st.button("Generar conclusiones", key="btn_conc"):
-        sensibilidad = "muy sensible" if Ea/1000 > 80 else "moderadamente sensible"
-        t90_5 = tiempos(orden, k_a(5), A0)["t90"]
-        t90_25 = tiempos(orden, k_a(25), A0)["t90"]
-        t90_30 = tiempos(orden, k_a(30), A0)["t90"]
-        factor = t90_25 / t90_30
-        st.info(
-            f"La degradación de {farmaco} se ajusta mejor a una cinética de {orden.lower()} "
-            f"(R² = {p['R2']:.4f}), con una constante k = {k:.5f}. "
-            f"La energía de activación es de {Ea/1000:.1f} kJ/mol, por lo que el principio activo "
-            f"es {sensibilidad} a la temperatura.\n\n"
-            f"Vida útil estimada (t90): {t90_5:.1f} {unidad} a 5 °C, {t90_25:.1f} {unidad} a 25 °C "
-            f"y {t90_30:.1f} {unidad} a 30 °C. Almacenar a 25 °C en lugar de 30 °C prolonga la "
-            f"vida útil {factor:.1f} veces.\n\n"
-            f"A {T_pred} °C, {farmaco} conservaría el 90% de su contenido durante "
-            f"{tp['t90']:.1f} {unidad} y se degradaría a la mitad en {tp['t50']:.1f} {unidad}."
-        )
-        st.caption("Estas predicciones asumen que el mecanismo de degradación no cambia con la "
-                   "temperatura. Deben confirmarse con estudios de estabilidad reales.")
+        a_dias = {"horas": 1/24, "días": 1, "semanas": 7, "meses": 30.4}[unidad]
+        def meses(x):
+            return x * a_dias / 30.4
+
+        # 1. Calidad de los datos
+        r2_orden = sorted([resultados[m]["R2"] for m in resultados], reverse=True)
+        diferencia = r2_orden[0] - r2_orden[1]
+        degradado = (A[0] - A.min()) / A[0] * 100
+        if p["R2"] >= 0.99:
+            calidad = "excelente"
+        elif p["R2"] >= 0.95:
+            calidad = "aceptable"
+        else:
+            calidad = "deficiente"
+        lineas = ["### 1. Calidad de los datos",
+                  f"- Se analizaron **{len(t)} puntos** experimentales; el principio activo "
+                  f"perdió **{degradado:.1f} %** de su concentración durante el estudio.",
+                  f"- El mejor ajuste fue **{orden.lower()}** (R² = {p['R2']:.4f}), "
+                  f"un ajuste **{calidad}**."]
+        if diferencia < 0.005 or degradado < 20:
+            lineas.append("- ⚠️ Los R² de los tres modelos son muy parecidos o la degradación fue baja, "
+                          "por lo que el orden no se distingue con claridad. Se recomienda prolongar "
+                          "el estudio hasta una degradación de al menos 30 a 50 %.")
+        if len(t) < 5:
+            lineas.append("- ⚠️ Hay pocos datos; se recomiendan al menos 5 puntos.")
+
+        # 2. Interpretación cinética
+        significado = {
+            "Orden 0": "la velocidad de degradación es constante y no depende de la cantidad de fármaco; "
+                       "es típico de suspensiones o formas sólidas donde solo se degrada la fracción disuelta",
+            "Orden 1": "la velocidad es proporcional a la concentración del fármaco; es el comportamiento "
+                       "más frecuente en soluciones y en reacciones de hidrólisis y oxidación",
+            "Orden 2": "la velocidad depende del cuadrado de la concentración, lo que sugiere una reacción "
+                       "bimolecular entre moléculas del fármaco o con otro reactivo"
+        }[orden]
+        lineas += ["### 2. Interpretación cinética",
+                   f"- En **{orden.lower()}**, {significado}.",
+                   f"- La constante de velocidad es **k = {k:.5f}** en unidades de {unidad}.",
+                   f"- En las condiciones del estudio, la vida media (t50) es de **{tiempos_exp['t50']:.1f} {unidad}** "
+                   f"y la vida útil (t90) de **{tiempos_exp['t90']:.1f} {unidad}**."]
+
+        # 3. Sensibilidad a la temperatura
+        ea_kj = Ea / 1000
+        if ea_kj < 50:
+            nivel = "baja: la temperatura influye poco y conviene vigilar otros factores, como la luz o la humedad"
+        elif ea_kj <= 100:
+            nivel = "moderada, dentro del rango habitual de la degradación química de fármacos"
+        else:
+            nivel = "alta: pequeños aumentos de temperatura aceleran mucho la degradación"
+        q10 = k_a(35) / k_a(25)
+        lineas += ["### 3. Sensibilidad a la temperatura",
+                   f"- La energía de activación es de **{ea_kj:.1f} kJ/mol**, una sensibilidad {nivel}.",
+                   f"- El **Q10 = {q10:.1f}**: por cada 10 °C de aumento cerca de la temperatura ambiente, "
+                   f"la degradación es {q10:.1f} veces más rápida."]
+
+        # 4. Almacenamiento
+        cond = {"5 °C (refrigeración)": 5, "25 °C (ambiente)": 25,
+                "30 °C (zona climática IV)": 30, "40 °C (acelerada)": 40}
+        lineas.append("### 4. Vida útil estimada y almacenamiento")
+        t90m = {}
+        for nombre_c, tc in cond.items():
+            t90m[tc] = meses(tiempos(orden, k_a(tc), A0)["t90"])
+            lineas.append(f"- A {nombre_c}: t90 ≈ **{t90m[tc]:.1f} meses**.")
+        if t90m[30] >= 24:
+            etiqueta = "Almacenar por debajo de 30 °C"
+        elif t90m[25] >= 24:
+            etiqueta = "No almacenar por encima de 25 °C"
+        elif t90m[5] >= 24:
+            etiqueta = "Conservar refrigerado entre 2 y 8 °C"
+        else:
+            etiqueta = "Inestable incluso en refrigeración: requiere reformulación o un empaque protector"
+        lineas.append(f"- Pasar de 25 °C a 30 °C reduce la vida útil {t90m[25] / t90m[30]:.1f} veces, "
+                      f"lo cual es relevante para un clima como el de Colombia (zona IV).")
+        lineas.append(f"- **Leyenda sugerida para la etiqueta:** {etiqueta}. "
+                      f"(Criterio: vida útil de al menos 24 meses.)")
+
+        # 5. Advertencias
+        t_min, t_max = T.min() - 273.15, T.max() - 273.15
+        lineas.append("### 5. Limitaciones")
+        lineas.append(f"- Las constantes se midieron entre {t_min:.0f} °C y {t_max:.0f} °C; las predicciones "
+                      f"a temperaturas fuera de ese rango son **extrapolaciones**.")
+        if reg_a.rvalue ** 2 < 0.95:
+            lineas.append("- ⚠️ El ajuste de Arrhenius es bajo (R² menor a 0,95); las predicciones son poco confiables.")
+        if len(T) < 3:
+            lineas.append("- ⚠️ Se necesitan al menos 3 temperaturas para un análisis de Arrhenius confiable.")
+        lineas.append("- Se asume que el mecanismo de degradación no cambia con la temperatura y no se "
+                      "consideran la luz ni la humedad. Los resultados deben confirmarse con estudios "
+                      "de estabilidad reales.")
+        st.markdown("\n".join(lineas))
 # ---------- DESCARGAR RESULTADOS EN EXCEL ----------
 import io
 with tab6:
