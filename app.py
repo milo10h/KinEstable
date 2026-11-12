@@ -142,9 +142,9 @@ with tab4:
         archivo_arr = st.file_uploader("📂 Subir datos desde Excel", type=["xlsx", "csv"], key="up_arr")
         unidad_T = st.radio("Unidad de temperatura", ["°C", "K"], horizontal=True)
     st.write(f"Ingresa las constantes k de {farmaco} a diferentes temperaturas (°C), o súbelas desde Excel. "
-             "El archivo debe tener dos columnas: Temperatura_C y k.")
+             "El archivo debe tener dos columnas: Temperatura y k.")
     arr_ejemplo = pd.DataFrame({
-        "Temperatura_C": [40, 50, 60, 70],
+        "Temperatura": [40, 50, 60, 70],
         "k": [0.005, 0.012, 0.027, 0.058]
     })
     clave_arr = "arr"
@@ -155,7 +155,7 @@ with tab4:
             else:
                 sub_arr = pd.read_excel(archivo_arr)
             sub_arr = sub_arr.iloc[:, :2]
-            sub_arr.columns = ["Temperatura_C", "k"]
+            sub_arr.columns = ["Temperatura", "k"]
             sub_arr = sub_arr.apply(pd.to_numeric, errors="coerce").dropna()
             arr_ejemplo = sub_arr
             clave_arr = "arr_" + archivo_arr.name
@@ -164,7 +164,7 @@ with tab4:
             st.error(f"No se pudo leer el archivo: {e}")
     arr = st.data_editor(arr_ejemplo, num_rows="dynamic", key=clave_arr).dropna()
 
-temps = arr["Temperatura_C"].astype(float).values
+temps = arr["Temperatura"].astype(float).values
 T = temps if unidad_T == "K" else temps + 273.15
 kT = arr["k"].astype(float).values
 x_arr = 1 / T
@@ -333,7 +333,7 @@ with tab6:
         pd.DataFrame({m: {"Pendiente": r["pendiente"], "Intercepto": r["intercepto"], "R²": r["R2"]}
                       for m, r in resultados.items()}).T.to_excel(writer, sheet_name="Regresiones")
         pd.DataFrame(tiempos_exp, index=[f"Tiempo ({unidad})"]).T.to_excel(writer, sheet_name="Tiempos")
-        pd.DataFrame({"T (°C)": arr["Temperatura_C"].values, "T (K)": T, "k": kT,
+        pd.DataFrame({"T (°C)": arr["Temperatura"].values, "T (K)": T, "k": kT,
                       "1/T": x_arr, "ln(k)": y_arr}).to_excel(writer, sheet_name="Arrhenius", index=False)
         pd.DataFrame([{"T (°C)": tc, "k": k_a(tc), **tiempos(orden, k_a(tc), A0)}
                       for tc in [5, 25, 30, 40]]).to_excel(writer, sheet_name="Predicción", index=False)
