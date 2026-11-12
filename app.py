@@ -6,7 +6,7 @@ from scipy import stats
 
 R = 8.314  # J/mol·K
 
-st.set_page_config(page_title="KinEstable", page_icon="⬡", layout="wide")
+st.set_page_config(page_title="KinEstable", page_icon="🧪", layout="wide")
 import base64
 tema = getattr(getattr(st.context, "theme", None), "type", None) or "light"
 archivo_fondo = "fondo.png"
