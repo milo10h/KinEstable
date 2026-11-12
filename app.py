@@ -292,6 +292,14 @@ import io
 with tab6:
     st.divider()
     st.subheader("📥 Descargar resultados")
+    st.info(
+        "📊 Descarga todos los resultados del análisis en un archivo de Excel con siete hojas: "
+        "Resumen, Datos, Regresiones, Tiempos, Arrhenius, Predicción y Prompt IA.\n\n"
+        "🤖 **¿Quieres conclusiones con inteligencia artificial?** En la hoja **Prompt IA** encontrarás "
+        "unas instrucciones listas para usar. Abre la IA de tu preferencia (ChatGPT, Gemini o Claude), "
+        "adjunta el archivo y pega el texto de esa hoja. La IA analizará tus resultados y redactará "
+        "las conclusiones por ti."
+    )
     buffer = io.BytesIO()
     with pd.ExcelWriter(buffer, engine="openpyxl") as writer:
         pd.DataFrame({
