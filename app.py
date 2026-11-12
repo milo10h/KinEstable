@@ -307,6 +307,23 @@ with tab6:
                       "1/T": x_arr, "ln(k)": y_arr}).to_excel(writer, sheet_name="Arrhenius", index=False)
         pd.DataFrame([{"T (°C)": tc, "k": k_a(tc), **tiempos(orden, k_a(tc), A0)}
                       for tc in [5, 25, 30, 40]]).to_excel(writer, sheet_name="Predicción", index=False)
+                prompt = (
+            "Eres un experto en estabilidad de productos farmacéuticos. "
+            f"Te adjunto un archivo Excel generado por KinEstable con los resultados del estudio cinético de {farmaco}. "
+            "Analiza todas las hojas y redacta en español unas conclusiones técnicas con estas partes: "
+            "1) calidad de los datos y del ajuste; "
+            "2) interpretación del orden de reacción y de k; "
+            "3) significado de la energía de activación y efecto de la temperatura; "
+            "4) vida útil (t90) y recomendaciones de almacenamiento para la zona climática IV, con una leyenda sugerida para la etiqueta; "
+            "5) limitaciones del análisis. "
+            "Usa solo los datos del archivo y no inventes valores."
+        )
+        pd.DataFrame({"Instrucciones": [
+            "1. Abre una IA (ChatGPT, Gemini o Claude).",
+            "2. Adjunta este archivo Excel.",
+            "3. Copia y pega el texto de la celda de abajo.",
+            prompt
+        ]}).to_excel(writer, sheet_name="Prompt IA", index=False)
     st.download_button("Descargar resultados en Excel", data=buffer.getvalue(),
                        file_name=f"KinEstable_{farmaco}.xlsx",
                        mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
