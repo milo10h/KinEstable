@@ -307,7 +307,7 @@ with tab6:
                       "1/T": x_arr, "ln(k)": y_arr}).to_excel(writer, sheet_name="Arrhenius", index=False)
         pd.DataFrame([{"T (°C)": tc, "k": k_a(tc), **tiempos(orden, k_a(tc), A0)}
                       for tc in [5, 25, 30, 40]]).to_excel(writer, sheet_name="Predicción", index=False)
-                prompt = (
+        prompt = (
             "Eres un experto en estabilidad de productos farmacéuticos. "
             f"Te adjunto un archivo Excel generado por KinEstable con los resultados del estudio cinético de {farmaco}. "
             "Analiza todas las hojas y redacta en español unas conclusiones técnicas con estas partes: "
