@@ -17,14 +17,14 @@ fondo = (a + "style" + c + ".stApp {background-image: url('data:image/png;base64
          "background-size: cover; background-attachment: fixed;}" + a + "/style" + c)
 st.markdown(fondo, unsafe_allow_html=True)
 estilo_tabs = (a + "style" + c +
-    '.stTabs [data-baseweb="tab-list"] {gap: 8px; width: 100%;}'
-    '.stTabs [data-baseweb="tab"] {flex: 1; justify-content: center; padding: 10px 6px;'
-    'border-radius: 10px; border: 1px solid rgba(79,163,173,0.6);'
-    'background: rgba(79,163,173,0.10);}'
-    '.stTabs [data-baseweb="tab"] p {font-size: 1.1rem; font-weight: 600;}'
-    '.stTabs [aria-selected="true"] {background: rgba(79,163,173,0.85);}'
-    '.stTabs [aria-selected="true"] p {color: white;}'
-    '.stTabs [data-baseweb="tab-highlight"], .stTabs [data-baseweb="tab-border"] {display: none;}'
+    'div[role="tablist"] {gap: 8px !important; width: 100% !important; display: flex !important;}'
+    'button[role="tab"] {flex: 1 1 0 !important; justify-content: center !important;'
+    'padding: 10px 6px !important; border-radius: 10px !important;'
+    'border: 1px solid rgba(79,163,173,0.6) !important; background: rgba(79,163,173,0.10) !important;}'
+    'button[role="tab"] p {font-size: 1.1rem !important; font-weight: 600 !important;}'
+    'button[role="tab"][aria-selected="true"] {background: rgba(79,163,173,0.85) !important;}'
+    'button[role="tab"][aria-selected="true"] p {color: white !important;}'
+    'div[data-baseweb="tab-highlight"], div[data-baseweb="tab-border"] {display: none !important;}'
     + a + "/style" + c)
 st.markdown(estilo_tabs, unsafe_allow_html=True)
 st.title("💊 KinEstable")
